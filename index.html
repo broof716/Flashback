@@ -13,73 +13,88 @@
     <div id="app"></div>
 
 <script type='text/babel'>
-    const cardData = importedFlashCardDataFile;
+  const cardData = importedFlashCardDataFile;
 
-    class App extends React.Component {
-      constructor() {
-        super();
-        this.state = {
-          cardData: []
-        };
-      }
-
-      componentDidMount() {
-        this.setState({ cardData: cardData });
-      }
-
-      shuffleBackward = () => {
-        console.log('Shuffle Backward!');
-      }
-
-      shuffleForward =() => {
-        const { cardData } = this.state;
-        const newCardData = [...cardData.slice(1), cardData[0]];
-        this.setState({ cardData: newCardData});
+  class App extends React.Component {
+    constructor() {
+      super();
+      this.state = {
+        cardData: []
+      };
     }
 
-      render() {
-        return (
-          <div className='App'>
-            <h1 className='title'>
-              Flashback
-            </h1>
-            <p className='sub-title'>
-              An interactive flashcard app.
+    componentDidMount() {
+      this.setState({ cardData: cardData });
+    }
+
+    shuffleBackward = () => {
+      const { cardData } = this.state;
+      const newCardData = [cardData[6], ...cardData.slice(0, 6)];
+      this.setState({ cardData: newCardData });
+    }
+
+    shuffleForward = () => {
+      const { cardData } = this.state;
+      const newCardData = [...cardData.slice(1), cardData[0]];
+      this.setState({ cardData: newCardData });
+    }
+
+    render() {
+      return (
+        <div className='App'>
+          <h1 className='title'>
+            Flashback
+          </h1>
+          <p className='sub-title'>
+            An interactive flash cards app.
+          </p>
+          <div className='card-list'>
+            {this.state.cardData.map((card, index) => <Card key={index} front={card.front} index={index} />)}
+          </div>
+          <div className='buttons'>
+            <button onClick={() => this.shuffleBackward()}>
+              &lt;
+            </button>
+            <button onClick={() => this.shuffleForward()}>
+              &gt;
+            </button>
+          </div>
+        </div>
+      );
+    }
+  }
+
+  class Card extends React.Component {
+    constructor() {
+      super();
+      this.state = {
+        flipped: false
+      };
+    }
+
+    flipCard = () => {
+      if (this.props.index === 0) {
+      this.setState({ flipped: !this.state.flipped });
+    }
+  }
+
+    render() {
+      return (
+        <div className='Card -front' onClick={() => this.flipCard()}>
+          <div className='front'>
+            <h3 className='question'>
+              {this.props.front.question}
+            </h3>
+            <p className='hint'>
+              <span>Hint:</span> {this.props.front.hint}
             </p>
-            <div className='card-list'>
-              {this.state.cardData.map((card, index) => <Card key={index} front={card.front} />)}
-            </div>
-            <div className='buttons'>
-              <button onClick={() => this.shuffleBackward()}>
-                &lt;
-              </button>
-              <button onClick={() => this.shuffleForward()}>
-                &gt;
-              </button>
-            </div>
           </div>
-        );
-      }
+        </div>
+      );
     }
+  }
 
-    class Card extends React.Component {
-      render() {
-        return (
-          <div className='Card -front'>
-            <div className='front'>
-              <h3 className='question'>
-                {this.props.front.question}
-              </h3>
-              <p className='hint'>
-                <span>Hint:</span> {this.props.front.hint}
-              </p>
-            </div>
-          </div>
-        );
-      }
-    }
-
-    ReactDOM.render(<App />, document.getElementById('app'));
+  ReactDOM.render(<App />, document.getElementById('app'));
 </script>
   </body>
 </html>
