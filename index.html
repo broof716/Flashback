@@ -31,6 +31,10 @@
         console.log('Shuffle Backward!');
       }
 
+      shuffleForward =() => {
+        console.log('Shuffle Forward');
+    }
+
       render() {
         return (
           <div className='App'>
@@ -47,7 +51,7 @@
               <button onClick={() => this.shuffleBackward()}>
                 &lt;
               </button>
-              <button>
+              <button onClick={() => this.shuffleForward()}>
                 &gt;
               </button>
             </div>
