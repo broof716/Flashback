@@ -32,7 +32,9 @@
       }
 
       shuffleForward =() => {
-        console.log('Shuffle Forward');
+        const { cardData } = this.state;
+        const newCardData = [...cardData.slice(1), cardData[0]];
+        this.setState({ cardData: newCardData});
     }
 
       render() {
